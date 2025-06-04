@@ -1,3 +1,6 @@
 flask
-requests
+line-bot-sdk
+pytesseract
+Pillow
 googletrans==4.0.0rc1
+
