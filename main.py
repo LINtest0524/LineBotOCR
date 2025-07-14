@@ -5,6 +5,10 @@ import re
 from flask import Flask, request, abort
 from googletrans import Translator
 
+import sys
+print("Python version:", sys.version)
+
+
 # 你自己的 LINE Token 記得填
 LINE_CHANNEL_ACCESS_TOKEN = '6aBf8Rme9gLFU/WXMv6ShJPNPmkMEvlqgxCkcAezvstVngNbEjGS6JPg1C3+HiGMEOKReyPJ5KaNl7mmy9VGdsMRAnllobMtB81x7XJCRAMCQsSS8oRAWgFVd9qJxS3UiH6pYlwkBE2ZWpxDxHlKEQdB04t89/1O/w1cDnyilFU='
 LINE_REPLY_API = 'https://api.line.me/v2/bot/message/reply'
