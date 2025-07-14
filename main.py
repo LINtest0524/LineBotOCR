@@ -6,7 +6,7 @@ from flask import Flask, request, abort
 # from googletrans import Translator
 
 from deep_translator import GoogleTranslator
-translator = GoogleTranslator(source='en', target='zh-tw')
+translator = GoogleTranslator(source='en', target='zh-TW')  
 result = translator.translate(word)
 
 
