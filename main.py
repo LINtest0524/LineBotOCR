@@ -5,8 +5,7 @@ import re
 from flask import Flask, request, abort
 from googletrans import Translator
 
-import sys
-print("Python version:", sys.version)
+
 
 
 # 你自己的 LINE Token 記得填
