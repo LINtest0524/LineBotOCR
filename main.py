@@ -62,6 +62,11 @@ def translate_with_googletrans(word):
 
 # 建立單字字卡 (Bubble)
 def build_flex_bubble(word, zh_translation, phonetic_kk, audio_url):
+    button_uri = (
+        audio_url if audio_url
+        else f"https://translate.google.com/?sl=en&tl=zh-TW&text={word}&op=translate"
+    )
+
     bubble = {
         "type": "bubble",
         "size": "mega",
@@ -78,13 +83,14 @@ def build_flex_bubble(word, zh_translation, phonetic_kk, audio_url):
                     "action": {
                         "type": "uri",
                         "label": "播放",
-                        "uri": audio_url if audio_url else "https://google.com"
+                        "uri": button_uri
                     }
                 }
             ]
         }
     }
     return bubble
+
 
 # 傳送到 LINE
 def reply_message(reply_token, messages):
