@@ -52,7 +52,7 @@ def query_dictionary(word):
 # ✅ 改這裡：用 deep-translator 進行翻譯
 def translate_with_googletrans(word):
     try:
-        zh = GoogleTranslator(source='en', target='zh-tw').translate(word)
+        zh = GoogleTranslator(source='en', target='zh').translate(word)
         print(f"[翻譯成功] {word} → {zh}")
         return zh
     except Exception as e:
