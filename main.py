@@ -62,11 +62,33 @@ def translate_with_googletrans(word):
 
 # 建立單字字卡 (Bubble)
 def build_flex_bubble(word, zh_translation, phonetic_kk, audio_url):
-    button_uri = (
-        audio_url if audio_url
-        else f"https://translate.google.com/?sl=en&tl=zh-TW&text={word}&op=translate"
-    )
+    google_url = f"https://translate.google.com/?sl=en&tl=zh-TW&text={word}&op=translate"
+    
+    # 播放按鈕（左邊，綠色）
+    play_button = {
+        "type": "button",
+        "style": "primary",
+        "action": {
+            "type": "uri",
+            "label": "播放",
+            "uri": audio_url if audio_url else google_url
+        },
+        "color": "#00C300"  # 自訂綠色
+    }
 
+    # 翻譯按鈕（右邊，藍色）
+    translate_button = {
+        "type": "button",
+        "style": "primary",
+        "action": {
+            "type": "uri",
+            "label": "翻譯",
+            "uri": google_url
+        },
+        "color": "#1E90FF"  # 自訂藍色
+    }
+
+    # Flex Message 組合
     bubble = {
         "type": "bubble",
         "size": "mega",
@@ -78,18 +100,16 @@ def build_flex_bubble(word, zh_translation, phonetic_kk, audio_url):
                 {"type": "text", "text": zh_translation, "size": "md", "wrap": True},
                 {"type": "text", "text": f"音標 (KK): {phonetic_kk}", "size": "sm", "wrap": True},
                 {
-                    "type": "button",
-                    "style": "primary",
-                    "action": {
-                        "type": "uri",
-                        "label": "播放",
-                        "uri": button_uri
-                    }
+                    "type": "box",
+                    "layout": "horizontal",
+                    "spacing": "md",
+                    "contents": [play_button, translate_button]
                 }
             ]
         }
     }
     return bubble
+
 
 
 # 傳送到 LINE
