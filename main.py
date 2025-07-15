@@ -3,14 +3,9 @@ import requests
 import json
 import re
 from flask import Flask, request, abort
-from googletrans import Translator
+from deep_translator import GoogleTranslator  # ✅ 改這裡
 
-# from deep_translator import GoogleTranslator
-# translator = GoogleTranslator(source='en', target='zh-TW')  
-# result = translator.translate(word)
-
-
-
+from linebot import LineBotApi, WebhookHandler  # 若你有後續要用 SDK，可保留
 
 # 你自己的 LINE Token 記得填
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
@@ -18,7 +13,6 @@ LINE_CHANNEL_ACCESS_TOKEN = os.getenv('LINE_CHANNEL_ACCESS_TOKEN')
 LINE_REPLY_API = 'https://api.line.me/v2/bot/message/reply'
 
 app = Flask(__name__)
-translator = Translator()
 
 # IPA ➔ KK 簡單對照表
 ipa_to_kk_dict = {
@@ -26,6 +20,10 @@ ipa_to_kk_dict = {
     "ɪ": "ɪ", "ʊ": "ʊ", "ɛ": "ɛ", "æ": "æ", "ʌ": "ʌ",
     "ɔ": "ɔ", "ə": "ə", "i": "i", "u": "u"
 }
+
+@app.route("/")
+def home():
+    return "LINE Bot Server is running!"
 
 def ipa_to_kk(ipa):
     for ipa_pattern, kk_replacement in sorted(ipa_to_kk_dict.items(), key=lambda x: -len(x[0])):
@@ -51,11 +49,10 @@ def query_dictionary(word):
         print("字典查詢錯誤：", e)
         return None
 
-# 翻譯單字
+# ✅ 改這裡：用 deep-translator 進行翻譯
 def translate_with_googletrans(word):
     try:
-        result = translator.translate(word, src='en', dest='zh-tw')
-        return result.text
+        return GoogleTranslator(source='en', target='zh-tw').translate(word)
     except Exception as e:
         print("翻譯錯誤：", e)
         return word
@@ -124,8 +121,7 @@ def callback():
                         reply_message(reply_token, [{"type": "text", "text": "請輸入有效單字列表"}])
                         return 'OK'
 
-                    words = words[:10]  # 安全保險限制10個
-
+                    words = words[:10]  # 限制最多 10 個單字
                     bubbles = []
                     for word in words:
                         zh = translate_with_googletrans(word) or word
@@ -137,7 +133,7 @@ def callback():
                             bubble = build_flex_bubble(word, zh, '-', '')
                         bubbles.append(bubble)
 
-                    # 單字只有一個時，不用 carousel
+                    # Flex message 組合
                     if len(bubbles) == 1:
                         flex_msg = {
                             "type": "flex",
@@ -162,5 +158,5 @@ def callback():
     return 'OK'
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
-
+    port = int(os.environ.get("PORT", 3000))
+    app.run(host="0.0.0.0", port=port)
