@@ -2,4 +2,5 @@ flask
 line-bot-sdk
 pytesseract
 Pillow
-deep-translator
+googletrans==4.0.0-rc1
+httpx==0.26.0

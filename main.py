@@ -3,11 +3,11 @@ import requests
 import json
 import re
 from flask import Flask, request, abort
-# from googletrans import Translator
+from googletrans import Translator
 
-from deep_translator import GoogleTranslator
-translator = GoogleTranslator(source='en', target='zh-TW')  
-result = translator.translate(word)
+# from deep_translator import GoogleTranslator
+# translator = GoogleTranslator(source='en', target='zh-TW')  
+# result = translator.translate(word)
 
 
 
